@@ -1,0 +1,19 @@
+# MMSEQS2 Search for prokaryotic KEGG modules fasta files vs Predicted "Unknown" proteins
+
+MMSEQS2="/cbscratch/dtemel/mmseqs2_f9d1/MMseqs2/build/src/mmseqs"
+
+EUKBOOK_PREDS_DIR="/usr/users/dtemel/EUKBOOK_PREDS_UNKNOWN"
+KEGG_MODULES_DIR="/usr/users/dtemel/KEGG_MODULES_ALL"
+
+DIRNAME="/cbscratch/dtemel/EukBook/Kegg/Unknown"
+
+mkdir -p "${DIRNAME}"
+cd "${DIRNAME}"
+
+"${MMSEQS2}" createdb ${EUKBOOK_PREDS_DIR}/* allPredsDb
+
+"${MMSEQS2}" createdb ${KEGG_MODULES_DIR}/* allKeggDb
+
+"${MMSEQS2}" search allPredsDb allKeggDb eukbookVsKeggRes tempFolder
+
+"${MMSEQS2}" convertalis allPredsDb allKeggDb eukbookVsKeggRes eukbookVsKegg.m8 --format-output "query,target,pident,alnlen,mismatch,gapopen,qstart,qend,tstart,tend,evalue,bits,qset,tset"
